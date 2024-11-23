@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\JadwalTesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,8 @@ use App\Http\Controllers\AuthController;
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/dashboard', [AuthController::class, 'dashboard']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/jadwal-tes', [JadwalTesController::class, 'index'])->name('jadwal.index');
+Route::post('/jadwal-tes', [JadwalTesController::class, 'store'])->name('jadwal.store');
+Route::delete('/jadwal-tes/{tanggal}', [JadwalTesController::class, 'destroy'])->name('jadwal.destroy');

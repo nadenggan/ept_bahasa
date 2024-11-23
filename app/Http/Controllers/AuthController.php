@@ -10,12 +10,6 @@ class AuthController extends Controller
 {
     public function showLoginForm(Request $request)
     {
-        // Jika admin sudah login, arahkan ke dashboard
-        if ($request->session()->has('admin')) {
-            return redirect('/dashboard');
-        }
-
-        // Jika belum login, tampilkan form login
         return view('auth.login');
     }
 
@@ -35,7 +29,7 @@ class AuthController extends Controller
             // Simpan data admin di session
             $request->session()->put('admin', $admin);
 
-            return redirect('/dashboard');
+            return redirect('/jadwal-tes');
         }
 
         // Jika login gagal, kembalikan ke halaman login dengan pesan error
