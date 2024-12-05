@@ -53,6 +53,10 @@
         <li>Anda belum memilih tanggal tes.</li>
     @endforelse
 </ul>
+
+<form action="{{ route('mahasiswa.logout') }}" method="GET" style="display: inline;">
+        <button type="submit">Logout</button>
+    </form>
 </body>
 
 </html>

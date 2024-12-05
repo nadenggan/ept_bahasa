@@ -58,6 +58,13 @@
         <p>Belum ada jadwal.</p>
     @endforelse
 
+    <form action="{{ route('admin.pendaftaran_tes') }}" method="GET" style="display: inline;">
+        <button type="submit">Pendaftaran Tes</button>
+    </form>
+
+    <form action="{{ route('admin.pendaftaran.terjadwal') }}" method="GET" style="display: inline;">
+        <button type="submit">Data Siswa Tes</button>
+    </form>
 
     <form action="{{ route('logout') }}" method="GET" style="display: inline;">
         <button type="submit">Logout</button>

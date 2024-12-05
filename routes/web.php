@@ -29,13 +29,16 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/jadwal-tes/{tanggal}', [JadwalTesController::class, 'destroy'])->name('jadwal.destroy');
     Route::get('/admin/pendaftaran-tes', [JadwalTesController::class, 'showPendaftaran'])->name('admin.pendaftaran_tes');
     Route::post('/admin/pendaftaran-tes/{id}/tentukan-ruangan', [JadwalTesController::class, 'tentukanRuangan'])->name('admin.tentukan_ruangan');
+    Route::get('admin/pendaftaran/terjadwal', [JadwalTesController::class, 'showTerjadwal'])->name('admin.pendaftaran.terjadwal');
+    Route::put('admin/pendaftaran/{id}/update-status', [JadwalTesController::class, 'updateStatusTes'])->name('admin.update_status_tes');
+
 
 });
 
 // Route untuk Mahasiswa
-Route::get('mahasiswa/login', [MahasiswaAuthController::class, 'showLoginForm'])->name('mahasiswa.login');
-Route::post('mahasiswa/login', [MahasiswaAuthController::class, 'login']);
-Route::post('mahasiswa/logout', [MahasiswaAuthController::class, 'logout'])->name('mahasiswa.logout');
+Route::get('login/mahasiswa', [MahasiswaAuthController::class, 'showLoginForm'])->name('mahasiswa.login');
+Route::post('login/mahasiswa', [MahasiswaAuthController::class, 'login']);
+Route::get('logout/mahasiswa', [MahasiswaAuthController::class, 'logout'])->name('mahasiswa.logout');
 
 // Dashboard Mahasiswa
 Route::middleware(['mahasiswa'])->group(function () {

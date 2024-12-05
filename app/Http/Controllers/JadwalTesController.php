@@ -55,35 +55,58 @@ class JadwalTesController extends Controller
     }
 
     public function tentukanRuangan(Request $request, $id)
-{
-    $pendaftaran = PendaftaranTes::find($id);
+    {
+        $pendaftaran = PendaftaranTes::find($id);
 
-    // Cek kapasitas ruangan
-    $ruangan = $request->ruangan;
-    $kapasitas = JadwalTes::where('ruangan', $ruangan)
-        ->where('tanggal', $pendaftaran->jadwalTes->tanggal)
-        ->first();
+        // Cek kapasitas ruangan
+        $ruangan = $request->ruangan;
+        $kapasitas = JadwalTes::where('ruangan', $ruangan)
+            ->where('tanggal', $pendaftaran->jadwalTes->tanggal)
+            ->first();
 
-    if ($kapasitas && $kapasitas->kuota > 0) {
-        // Kurangi kuota
-        $kapasitas->kuota -= 1;
-        $kapasitas->save();
+        if ($kapasitas && $kapasitas->kuota > 0) {
+            // Kurangi kuota
+            $kapasitas->kuota -= 1;
+            $kapasitas->save();
 
-        //Log::info('Sebelum update: ', ['pendaftaran' => $pendaftaran]);
+            //Log::info('Sebelum update: ', ['pendaftaran' => $pendaftaran]);
 
-        $pendaftaran->update([
-            'ruangan' => $request->ruangan,
-            'status_daftar' => 'diterima',
+            $pendaftaran->update([
+                'ruangan' => $request->ruangan,
+                'status_daftar' => 'diterima',
+            ]);
+
+            // Log::info('Setelah update: ', ['pendaftaran' => $pendaftaran]);
+
+            return redirect()->route('admin.pendaftaran_tes')->with('success', 'Ruangan berhasil ditentukan untuk mahasiswa.');
+        } else {
+            return back()->withErrors(['ruangan' => 'Ruangan tidak tersedia.']);
+        }
+    }
+
+    public function showTerjadwal()
+    {
+        $terjadwal = PendaftaranTes::with(['mahasiswa', 'jadwalTes'])
+            ->whereNotNull('ruangan')
+            ->where('status_daftar', 'diterima')
+            ->get();
+
+        return view('admin.terjadwal', compact('terjadwal'));
+    }
+
+    public function updateStatusTes(Request $request, $id)
+    {
+        $pendaftaran = PendaftaranTes::findOrFail($id);
+
+        $request->validate([
+            'status_tes' => 'required|in:Belum Tes,Sudah Tes',
         ]);
 
-       // Log::info('Setelah update: ', ['pendaftaran' => $pendaftaran]);
+        $pendaftaran->update([
+            'status_tes' => $request->status_tes,
+        ]);
 
-        return redirect()->route('admin.pendaftaran_tes')->with('success', 'Ruangan berhasil ditentukan untuk mahasiswa.');
-    } else {
-        return back()->withErrors(['ruangan' => 'Ruangan tidak tersedia.']);
+        return redirect()->route('admin.pendaftaran.terjadwal')->with('success', 'Status tes berhasil diperbarui.');
     }
-}
-
-
 
 }

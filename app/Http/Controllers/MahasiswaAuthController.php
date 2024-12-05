@@ -42,13 +42,13 @@ class MahasiswaAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/mahasiswa/login');
+        return redirect('/login/mahasiswa');
     }
 
     public function dashboard(Request $request)
     {
         if (!$request->session()->has('mahasiswa')) {
-            return redirect('/mahasiswa/login');
+            return redirect('/login/mahasiswa');
         }
 
         // Ambil data jadwal tes
