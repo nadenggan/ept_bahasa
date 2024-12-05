@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Tes</title>
 </head>
+
 <body>
 
     <h3>Jadwal Tes</h3>
@@ -46,7 +48,8 @@
                 @endforeach
             </tbody>
         </table>
-        <form action="{{ route('jadwal.destroy', $tanggal) }}" method="POST" onsubmit="return confirm('Hapus semua jadwal untuk tanggal ini?');">
+        <form action="{{ route('jadwal.destroy', $tanggal) }}" method="POST"
+            onsubmit="return confirm('Hapus semua jadwal untuk tanggal ini?');">
             @csrf
             @method('DELETE')
             <button type="submit">Hapus Jadwal Tanggal {{ $tanggal }}</button>
@@ -54,5 +57,11 @@
     @empty
         <p>Belum ada jadwal.</p>
     @endforelse
+
+
+    <form action="{{ route('logout') }}" method="GET" style="display: inline;">
+        <button type="submit">Logout</button>
+    </form>
 </body>
+
 </html>
