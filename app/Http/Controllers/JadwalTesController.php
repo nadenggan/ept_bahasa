@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\JadwalTes;
+use App\Models\PendaftaranTes;
+use Illuminate\Support\Facades\Log;
+
 
 class JadwalTesController extends Controller
 {
@@ -11,7 +14,7 @@ class JadwalTesController extends Controller
     {
         $jadwals = JadwalTes::orderBy('tanggal')->get()->groupBy('tanggal');
 
-        return view('jadwal.index', compact('jadwals'));
+        return view('admin.index', compact('jadwals'));
     }
 
     public function store(Request $request)
@@ -44,4 +47,43 @@ class JadwalTesController extends Controller
 
         return redirect()->route('jadwal.index')->with('success', 'Jadwal untuk tanggal tersebut berhasil dihapus.');
     }
+
+    public function showPendaftaran()
+    {
+        $pendaftaranTes = PendaftaranTes::with(['mahasiswa', 'jadwalTes'])->get();
+        return view('admin.pendaftaran_tes', compact('pendaftaranTes'));
+    }
+
+    public function tentukanRuangan(Request $request, $id)
+{
+    $pendaftaran = PendaftaranTes::find($id);
+
+    // Cek kapasitas ruangan
+    $ruangan = $request->ruangan;
+    $kapasitas = JadwalTes::where('ruangan', $ruangan)
+        ->where('tanggal', $pendaftaran->jadwalTes->tanggal)
+        ->first();
+
+    if ($kapasitas && $kapasitas->kuota > 0) {
+        // Kurangi kuota
+        $kapasitas->kuota -= 1;
+        $kapasitas->save();
+
+        //Log::info('Sebelum update: ', ['pendaftaran' => $pendaftaran]);
+
+        $pendaftaran->update([
+            'ruangan' => $request->ruangan,
+            'status_daftar' => 'diterima',
+        ]);
+
+       // Log::info('Setelah update: ', ['pendaftaran' => $pendaftaran]);
+
+        return redirect()->route('admin.pendaftaran_tes')->with('success', 'Ruangan berhasil ditentukan untuk mahasiswa.');
+    } else {
+        return back()->withErrors(['ruangan' => 'Ruangan tidak tersedia.']);
+    }
+}
+
+
+
 }

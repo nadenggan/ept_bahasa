@@ -27,6 +27,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/jadwal-tes', [JadwalTesController::class, 'index'])->name('jadwal.index');
     Route::post('/jadwal-tes', [JadwalTesController::class, 'store'])->name('jadwal.store');
     Route::delete('/jadwal-tes/{tanggal}', [JadwalTesController::class, 'destroy'])->name('jadwal.destroy');
+    Route::get('/admin/pendaftaran-tes', [JadwalTesController::class, 'showPendaftaran'])->name('admin.pendaftaran_tes');
+    Route::post('/admin/pendaftaran-tes/{id}/tentukan-ruangan', [JadwalTesController::class, 'tentukanRuangan'])->name('admin.tentukan_ruangan');
+
 });
 
 // Route untuk Mahasiswa
@@ -37,4 +40,5 @@ Route::post('mahasiswa/logout', [MahasiswaAuthController::class, 'logout'])->nam
 // Dashboard Mahasiswa
 Route::middleware(['mahasiswa'])->group(function () {
     Route::get('/mahasiswa/dashboard', [MahasiswaAuthController::class, 'dashboard'])->name('mahasiswa.dashboard');
+    Route::post('/mahasiswa/pilih-tanggal', [MahasiswaAuthController::class, 'pilihTanggal'])->name('mahasiswa.pilih_tanggal');
 });

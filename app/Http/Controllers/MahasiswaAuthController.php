@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Hash;
+use App\Models\JadwalTes;
+use App\Models\PendaftaranTes;
+use App\Http\Controllers\Log;
 
 class MahasiswaAuthController extends Controller
 {
@@ -48,6 +51,44 @@ class MahasiswaAuthController extends Controller
             return redirect('/mahasiswa/login');
         }
 
-        return view('mahasiswa.dashboard'); 
+        // Ambil data jadwal tes
+        $jadwalTes = JadwalTes::select('tanggal')->distinct()->orderBy('tanggal')->get();
+
+        // Ambil pendaftaran tes mahasiswa
+        $pendaftaranTes = PendaftaranTes::where('mahasiswa_id', $request->session()->get('mahasiswa')->id)->with('jadwalTes')->get();
+
+        return view('mahasiswa.dashboard', compact('jadwalTes', 'pendaftaranTes'));
+    }
+
+    public function pilihTanggal(Request $request)
+    {
+        
+        // Dapatkan ID mahasiswa dari session
+        $mahasiswaId = $request->session()->get('mahasiswa')->id;
+
+        // Mendapatkan ID jadwal_tes berdasarkan tanggal yang dipilih
+        $jadwalTes = JadwalTes::where('tanggal', $request->tanggal)->first();
+
+        if (!$jadwalTes) {
+            return redirect()->back()->withErrors(['tanggal' => 'Tanggal yang dipilih tidak tersedia.']);
+        }
+
+         // Simpan pemilihan tes
+         $pendaftaran = PendaftaranTes::create([
+            'mahasiswa_id' => $mahasiswaId,
+            'jadwal_tes_id' => $jadwalTes->id,
+            'status_daftar' => 'dalam konfirmasi',
+            'status_tes' => null,
+            'tgl_bayar' => now(),
+            'no_transaksi' => uniqid(),
+            'ruangan' => null,
+        ]);
+
+        // Cek apakah pendaftaran berhasil
+        if ($pendaftaran) {
+            return redirect()->route('mahasiswa.dashboard')->with('success', 'Tanggal telah dipilih, menunggu konfirmasi dari admin.');
+        } else {
+            return redirect()->route('mahasiswa.dashboard')->withErrors(['error' => 'Gagal menyimpan pendaftaran.']);
+        }
     }
 }
