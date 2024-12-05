@@ -9,10 +9,12 @@ class PendaftaranTes extends Model
 {
     use HasFactory;
     protected $table = 'pendaftaran';
-    protected $fillable = ['mahasiswa_id', 'jadwal_tes_id', 'status_daftar', 'ruangan', 'status_tes', 'tgl_bayar', 'no_transaksi'];
+    protected $fillable = ['mahasiswa_id', 'jadwal_tes_id', 'status_daftar', 'ruangan', 'status_tes', 'tgl_bayar', 'bukti_bayar', 'no_transaksi'];
+
 
     public function mahasiswa()
     {
+        // Relasi one to many
         return $this->belongsTo(Mahasiswa::class);
     }
 

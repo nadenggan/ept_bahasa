@@ -8,14 +8,17 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\JadwalTes;
 use App\Models\PendaftaranTes;
 use App\Http\Controllers\Log;
+use Carbon\Carbon;
 
 class MahasiswaAuthController extends Controller
 {
+    // Menampilkan form login mahasiswa
     public function showLoginForm()
     {
         return view('auth.mahasiswa_login');
     }
 
+    // Validasi mahasiswa login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -36,6 +39,7 @@ class MahasiswaAuthController extends Controller
         return back()->withErrors(['email' => 'Email atau password salah.']);
     }
 
+    // Logout mahasiswa
     public function logout(Request $request)
     {
         $request->session()->forget('mahasiswa');
@@ -45,41 +49,42 @@ class MahasiswaAuthController extends Controller
         return redirect('/login/mahasiswa');
     }
 
+    // Menampilkan dashboard mahasiswa
     public function dashboard(Request $request)
     {
         if (!$request->session()->has('mahasiswa')) {
             return redirect('/login/mahasiswa');
         }
 
-        // Ambil data jadwal tes
+        // Mengambil data jadwal tes
         $jadwalTes = JadwalTes::select('tanggal')->distinct()->orderBy('tanggal')->get();
 
-        // Ambil pendaftaran tes mahasiswa
+        // Mengambil data pendaftaran tes mahasiswa
         $pendaftaranTes = PendaftaranTes::where('mahasiswa_id', $request->session()->get('mahasiswa')->id)->with('jadwalTes')->get();
 
         return view('mahasiswa.dashboard', compact('jadwalTes', 'pendaftaranTes'));
     }
 
+    // Memilih tanggal tes EPT
     public function pilihTanggal(Request $request)
     {
-        
-        // Dapatkan ID mahasiswa dari session
         $mahasiswaId = $request->session()->get('mahasiswa')->id;
 
         // Mendapatkan ID jadwal_tes berdasarkan tanggal yang dipilih
         $jadwalTes = JadwalTes::where('tanggal', $request->tanggal)->first();
 
+        // Kondisi jika jadwal tidak tersedia
         if (!$jadwalTes) {
             return redirect()->back()->withErrors(['tanggal' => 'Tanggal yang dipilih tidak tersedia.']);
         }
 
-         // Simpan pemilihan tes
-         $pendaftaran = PendaftaranTes::create([
+        // Menyimpan pemilihan tes
+        $pendaftaran = PendaftaranTes::create([
             'mahasiswa_id' => $mahasiswaId,
             'jadwal_tes_id' => $jadwalTes->id,
-            'status_daftar' => 'dalam konfirmasi',
+            'status_daftar' => 'belum bayar',
             'status_tes' => null,
-            'tgl_bayar' => now(),
+            'tgl_bayar' => null,
             'no_transaksi' => uniqid(),
             'ruangan' => null,
         ]);
@@ -91,4 +96,27 @@ class MahasiswaAuthController extends Controller
             return redirect()->route('mahasiswa.dashboard')->withErrors(['error' => 'Gagal menyimpan pendaftaran.']);
         }
     }
+
+    // Komfirmasi pembayaran oleh mahasiswa
+    public function konfirmasiBayar(Request $request, $id)
+    {
+        $request->validate([
+            'bukti_bayar' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+        ]);
+
+        $pendaftaran = PendaftaranTes::findOrFail($id);
+
+        // Simpan file ke storage/public/bukti_pembayaran
+        $filePath = $request->file('bukti_bayar')->store('bukti_pembayaran', 'public');
+
+        // Update tabel pendaftaran
+        $pendaftaran->update([
+            'bukti_bayar' => $filePath,
+            'status_daftar' => 'Dalam Konfirmasi', // Status diperbarui
+            'tgl_bayar' => Carbon::now()->toDateString(),
+        ]);
+
+        return redirect()->route('mahasiswa.dashboard')->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi admin.');
+    }
+
 }

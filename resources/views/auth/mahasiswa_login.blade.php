@@ -8,6 +8,7 @@
 <body>
     <h2>Login Mahasiswa</h2>
 
+    <!-- Menampilkan pesan error -->
     @if ($errors->any())
         <div style="color: red;">
             <ul>
@@ -18,6 +19,7 @@
         </div>
     @endif
 
+    <!-- Form login mahasiswa -->
     <form action="{{ route('mahasiswa.login') }}" method="POST">
         @csrf
         <div>

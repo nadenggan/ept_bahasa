@@ -10,12 +10,14 @@
 <body>
     <h1>Data Mahasiswa Terjadwal</h1>
 
+    <!-- Menampilkan pesan sukses -->
     @if (session('success'))
         <div style="color: green;">
             {{ session('success') }}
         </div>
     @endif
 
+    <!-- Menampilkan data siswa yang akan mengikuti tes EPT -->
     @if ($terjadwal->isEmpty())
         <p>Tidak ada data mahasiswa terjadwal.</p>
     @else
@@ -27,6 +29,7 @@
                     <th>Tanggal Tes</th>
                     <th>Ruangan</th>
                     <th>Status Tes</th>
+                    <th>Bukti Bayar</th>
                 </tr>
             </thead>
             <tbody>
@@ -37,6 +40,7 @@
                         <td>{{ $pendaftaran->jadwalTes->tanggal }}</td>
                         <td>{{ $pendaftaran->ruangan }}</td>
                         <td>
+                            <!-- Update status tes oleh admin -->
                             <form action="{{ route('admin.update_status_tes', $pendaftaran->id) }}" method="POST">
                                 @csrf
                                 @method('PUT')
@@ -48,12 +52,16 @@
                                 </select>
                             </form>
                         </td>
+                        <td>
+                            <a href="{{ asset('storage/' . $pendaftaran->bukti_bayar) }}" target="_blank">View</a> <br>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     @endif
 
+    <!-- Kembali ke dashboard admin -->
     <a href="{{ route('jadwal.index') }}">Kembali ke dashboard</a>
 </body>
 

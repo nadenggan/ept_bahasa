@@ -7,6 +7,8 @@
 </head>
 <body>
     <h2>Login</h2>
+
+    <!-- Form login admin -->
     <form action="{{ route('login') }}" method="POST">
         @csrf
         <div>
@@ -20,6 +22,7 @@
         <button type="submit">Login</button>
     </form>
 
+    <!-- Menampilkan pesan eror -->
     @if ($errors->any())
         <div>
             <ul>

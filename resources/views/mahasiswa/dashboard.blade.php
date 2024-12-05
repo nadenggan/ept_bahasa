@@ -9,6 +9,8 @@
 
 <body>
     <h1>Selamat Datang di Dashboard Mahasiswa</h1>
+
+    <!-- Menampilkan Pesan Sukses -->
     @if (session('success'))
         <div style="color: green;">
             {{ session('success') }}
@@ -23,6 +25,8 @@
             @endforeach
         </div>
     @endif
+
+    <!-- Menampilkan Jadwal tes EPT yang tersedia-->
     <h2>Jadwal Tes</h2>
     <ul>
         @forelse ($jadwalTes as $jadwal)
@@ -30,6 +34,7 @@
                 {{ $jadwal->tanggal }}
                 <form action="{{ route('mahasiswa.pilih_tanggal') }}" method="POST">
                     @csrf
+                    <!-- Pilih jadwal tes EPT -->
                     <input type="hidden" name="tanggal" value="{{ $jadwal->tanggal }}">
                     <button type="submit">Pilih Tanggal</button>
                 </form>
@@ -39,22 +44,36 @@
         @endforelse
     </ul>
 
-    <h2>Status Pendaftaran</h2>
-    <ul>
-    @forelse ($pendaftaranTes as $pendaftaran)
-        <li>
-            Status: {{ $pendaftaran->status_daftar }}
-            @if ($pendaftaran->status_daftar == 'dalam konfirmasi')
-            @elseif ($pendaftaran->status_daftar == 'diterima')
-                Tanggal: {{ $pendaftaran->jadwalTes->tanggal }}, Ruangan: {{ $pendaftaran->ruangan }}
-            @endif
-        </li>
-    @empty
-        <li>Anda belum memilih tanggal tes.</li>
-    @endforelse
-</ul>
 
-<form action="{{ route('mahasiswa.logout') }}" method="GET" style="display: inline;">
+
+    <!-- Upload Bukti pembayaran oleh mahasiswa -->
+    <ul>
+        @foreach ($pendaftaranTes as $pendaftaran)
+            <!-- Jika status daftar adalah belum bayar -->
+            @if ($pendaftaran->status_daftar === 'belum bayar')
+                <h3>Bayar Rp.110,000 ke no rekening: 1231241429</h3>
+                <form action="{{ route('mahasiswa.konfirmasi_bayar', $pendaftaran->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <label for="bukti_bayar">Upload Bukti Pembayaran:</label>
+                    <input type="file" name="bukti_bayar" accept=".jpg,.jpeg,.png,.pdf" required>
+                    <button type="submit">Upload Bukti</button>
+                </form>
+                <!-- Jika status daftar adalah Dalam Konfirmasi -->
+            @elseif ($pendaftaran->status_daftar === 'Dalam Konfirmasi')
+                Status: Menunggu Konfirmasi Admin
+
+                <!-- Jika status daftar adalah diterima -->
+            @elseif ($pendaftaran->status_daftar === 'diterima')
+                Tanggal: {{ $pendaftaran->jadwalTes->tanggal }} <br>
+                {{ $pendaftaran->ruangan }}
+            @endif
+            </>
+        @endforeach
+    </ul>
+
+
+    <form action="{{ route('mahasiswa.logout') }}" method="GET" style="display: inline;">
         <button type="submit">Logout</button>
     </form>
 </body>

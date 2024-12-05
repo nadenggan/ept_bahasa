@@ -11,14 +11,16 @@
 
     <h3>Jadwal Tes</h3>
 
+    <!-- Menampilkan pesan sukses -->
     @if (session('success'))
         <p style="color: green;">{{ session('success') }}</p>
     @endif
-
+    <!-- Menampilkan pesan error -->
     @if ($errors->any())
         <p style="color: red;">{{ $errors->first() }}</p>
     @endif
 
+    <!-- Form untuk menambahkan jadwal tes EPT -->
     <form action="{{ route('jadwal.store') }}" method="POST" style="margin-bottom: 20px;">
         @csrf
         <div>
@@ -28,6 +30,7 @@
         <button type="submit">Tambah Jadwal</button>
     </form>
 
+    <!-- Menampilkan jadwal tes EPT -->
     @forelse ($jadwals as $tanggal => $ruangan)
         <h4>{{ $tanggal }}</h4>
         <table border="1" style="margin-bottom: 20px;">
@@ -48,6 +51,7 @@
                 @endforeach
             </tbody>
         </table>
+        <!-- Menghapus jadwal tes EPT -->
         <form action="{{ route('jadwal.destroy', $tanggal) }}" method="POST"
             onsubmit="return confirm('Hapus semua jadwal untuk tanggal ini?');">
             @csrf
@@ -58,14 +62,17 @@
         <p>Belum ada jadwal.</p>
     @endforelse
 
+    <!-- Route halaman antrian pendaftaran tes EPT -->
     <form action="{{ route('admin.pendaftaran_tes') }}" method="GET" style="display: inline;">
         <button type="submit">Pendaftaran Tes</button>
     </form>
 
+    <!-- Route halaman data mahasiswa yang akan mengikuti tes EPT -->
     <form action="{{ route('admin.pendaftaran.terjadwal') }}" method="GET" style="display: inline;">
         <button type="submit">Data Siswa Tes</button>
     </form>
 
+    <!-- Route logout -->
     <form action="{{ route('logout') }}" method="GET" style="display: inline;">
         <button type="submit">Logout</button>
     </form>
