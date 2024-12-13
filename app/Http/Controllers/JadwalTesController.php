@@ -130,4 +130,16 @@ class JadwalTesController extends Controller
         return redirect()->back()->with('success', 'Pembayaran berhasil diverifikasi.');
 
     }
+
+    public function batalVerifikasi($id)
+    {
+        // Cari data pendaftaran berdasarkan ID
+        $pendaftaran = PendaftaranTes::find($id);
+
+        // Perbarui status pembayaran ke 'Belum Terverifikasi'
+        $pendaftaran->status_daftar = 'Ditolak';
+        $pendaftaran->save();
+
+        return redirect()->back()->with('success', 'Verifikasi pembayaran berhasil dibatalkan.');
+    }
 }

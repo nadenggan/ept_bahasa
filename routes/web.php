@@ -32,6 +32,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('admin/pendaftaran/terjadwal', [JadwalTesController::class, 'showTerjadwal'])->name('admin.pendaftaran.terjadwal');
     Route::put('admin/pendaftaran/{id}/update-status', [JadwalTesController::class, 'updateStatusTes'])->name('admin.update_status_tes');
     Route::put('/admin/verifikasi-bayar/{id}', [JadwalTesController::class, 'verifikasiBayar'])->name('admin.verifikasi_bayar');
+    Route::put('/admin/pendaftaran/{id}/batal-verifikasi', [JadwalTesController::class, 'batalVerifikasi'])->name('admin.batal_verifikasi');
+
 
 });
 
@@ -45,5 +47,6 @@ Route::middleware(['mahasiswa'])->group(function () {
     Route::get('/mahasiswa/dashboard', [MahasiswaAuthController::class, 'dashboard'])->name('mahasiswa.dashboard');
     Route::post('/mahasiswa/pilih-tanggal', [MahasiswaAuthController::class, 'pilihTanggal'])->name('mahasiswa.pilih_tanggal');
     Route::post('/mahasiswa/konfirmasi-bayar/{id}', [MahasiswaAuthController::class, 'konfirmasiBayar'])->name('mahasiswa.konfirmasi_bayar');
+    Route::get('/mahasiswa/ept',[MahasiswaAuthController::class, 'ept'])->name('mahasiswa.ept');
 
 });

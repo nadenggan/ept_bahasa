@@ -22,7 +22,7 @@
                 <li class="nav-item"><a class="nav-link" href="#program">Program</a></li>
                 <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="/login/mahasiswa">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('mahasiswa.logout') }}">Logout</a></li>
             </ul>
         </div>
     </div>
@@ -58,7 +58,7 @@
                 The English language skills tested include listening, reading and writing. 
                 The language components tested include vocabulary, structure, pronunciation, including intonation and emphasis.
             </p>
-             <a href="/mahasiswa/ept" class="btn btn-primary">Register EPT Test</a>
+             <a href="{{ route('mahasiswa.ept') }}"  class="btn btn-primary">Register EPT Test</a>
         </div>
         <div class="col-md-6 text-center">
             <img src="{{ asset('/ept-logo.png') }}" alt="EPT Logo" class="img-fluid">

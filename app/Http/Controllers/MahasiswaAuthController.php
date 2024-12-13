@@ -49,8 +49,14 @@ class MahasiswaAuthController extends Controller
         return redirect('/login/mahasiswa');
     }
 
-    // Menampilkan dashboard mahasiswa
-    public function dashboard(Request $request)
+
+    // Menampilkan halaman Dashboard
+    public function dashboard()
+    {
+        return view('mahasiswa.dashboard');
+    }
+    // Menampilkan halaman daftar EPT mahasiswa
+    public function ept(Request $request)
     {
         if (!$request->session()->has('mahasiswa')) {
             return redirect('/login/mahasiswa');
@@ -60,9 +66,10 @@ class MahasiswaAuthController extends Controller
         $jadwalTes = JadwalTes::select('tanggal')->distinct()->orderBy('tanggal')->get();
 
         // Mengambil data pendaftaran tes mahasiswa
-        $pendaftaranTes = PendaftaranTes::where('mahasiswa_id', $request->session()->get('mahasiswa')->id)->with('jadwalTes')->get();
+        $pendaftaranTes = PendaftaranTes::where('mahasiswa_id', $request->session()->get('mahasiswa')->id)->with('jadwalTes')->latest() 
+        ->first();;
 
-        return view('mahasiswa.dashboard', compact('jadwalTes', 'pendaftaranTes'));
+        return view('mahasiswa.ept', compact('jadwalTes', 'pendaftaranTes'));
     }
 
     // Memilih tanggal tes EPT
@@ -91,9 +98,9 @@ class MahasiswaAuthController extends Controller
 
         // Cek apakah pendaftaran berhasil
         if ($pendaftaran) {
-            return redirect()->route('mahasiswa.dashboard')->with('success', 'Tanggal telah dipilih, menunggu konfirmasi dari admin.');
+            return redirect()->route('mahasiswa.ept')->with('success', 'Tanggal telah dipilih, lakukan pembayaran Anda!');
         } else {
-            return redirect()->route('mahasiswa.dashboard')->withErrors(['error' => 'Gagal menyimpan pendaftaran.']);
+            return redirect()->route('mahasiswa.ept')->withErrors(['error' => 'Gagal menyimpan pendaftaran.']);
         }
     }
 
@@ -116,7 +123,7 @@ class MahasiswaAuthController extends Controller
             'tgl_bayar' => Carbon::now()->toDateString(),
         ]);
 
-        return redirect()->route('mahasiswa.dashboard')->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi admin.');
+        return redirect()->route('mahasiswa.ept')->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi admin.');
     }
 
 }

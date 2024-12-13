@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pendaftaran Tes Mahasiswa</title>
-     <link rel="stylesheet" href="../css/daftar.css">
+    <link rel="stylesheet" href="../css/daftar.css">
 </head>
 
 <body>
@@ -38,19 +38,32 @@
         <ul>
             @foreach ($pendaftaranTes as $pendaftaran)
                 <li>
-                    <div><strong>Nama:</strong> {{ $pendaftaran->mahasiswa->name }}</div>
-                    <div><strong>Tanggal Tes:</strong> {{ $pendaftaran->jadwalTes->tanggal }}</div>
-
                     @if ($pendaftaran->status_daftar == 'Dalam Konfirmasi')
-                        <div><strong>Bukti Pembayaran:</strong> <a href="{{ asset('storage/' . $pendaftaran->bukti_bayar) }}" target="_blank">Lihat Bukti</a></div>
-                        <form action="{{ route('admin.verifikasi_bayar', $pendaftaran->id) }}" method="POST" class="form-group">
+                        <strong>Nama:</strong> {{ $pendaftaran->mahasiswa->name }}<br>
+                        <strong>Tanggal Tes:</strong> {{ $pendaftaran->jadwalTes->tanggal }}
+                        <strong>Bukti Pembayaran:</strong> <a href="{{ asset('storage/' . $pendaftaran->bukti_bayar) }}"
+                            target="_blank">Lihat Bukti</a>
+
+                            <!-- Verifikasi Bayar -->
+                        <form action="{{ route('admin.verifikasi_bayar', $pendaftaran->id) }}" method="POST"
+                            class="form-group ">
                             @csrf
                             @method('PUT')
                             <button type="submit">Verifikasi Pembayaran</button>
                         </form>
+
+                        <!-- Batal Verifikasi -->
+                        <form action="{{ route('admin.batal_verifikasi', $pendaftaran->id) }}" method="POST"
+                            style="display: inline;">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-danger">Batal</button>
+                        </form>
                     @endif
 
                     @if ($pendaftaran->status_daftar == 'Diterima')
+                        <strong>Nama:</strong> {{ $pendaftaran->mahasiswa->name }}<br>
+                        <strong>Tanggal Tes:</strong> {{ $pendaftaran->jadwalTes->tanggal }}
                         <form action="{{ route('admin.tentukan_ruangan', $pendaftaran->id) }}" method="POST" class="form-group">
                             @csrf
                             <label for="ruangan">Pilih Ruangan:</label>
