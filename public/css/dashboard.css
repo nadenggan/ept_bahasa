@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.navbar {
+    background-color: #003366;
+}
+.navbar a {
+    color: white;
+}
+.header img {
+    height: 50px;
+    margin-right: 10px;
+}
+.header-banner {
+    background: url('/images/banner.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+}
+.program-icon {
+    font-size: 50px;
+    color: #003366;
+}
+.faq-item {
+    margin-bottom: 20px;
+}
+footer {
+    background-color: #003366;
+    color: white;
+    padding: 20px 0;
+}
