@@ -33,6 +33,13 @@ Route::middleware(['admin'])->group(function () {
     Route::put('admin/pendaftaran/{id}/update-status', [JadwalTesController::class, 'updateStatusTes'])->name('admin.update_status_tes');
     Route::put('/admin/verifikasi-bayar/{id}', [JadwalTesController::class, 'verifikasiBayar'])->name('admin.verifikasi_bayar');
 
+    Route::get('/jadwal-kelas', [KelasController::class, 'index'])->name('jadwal.index');
+    Route::post('/jadwal-kelas', [KelasController::class, 'store'])->name('jadwal.store');
+    Route::delete('/jadwal-kelas/{id}', [KelasController::class, 'destroy'])->name('jadwal.destroy');
+    Route::get('/admin/pendaftaran-kelas', [KelasController::class, 'showPendaftaran'])->name('admin.pendaftaran_kelas');
+    Route::post('/admin/pendaftaran-kelas/{id}/tentukan-kelas', [KelasController::class, 'tentukanKelas'])->name('admin.tentukan_kelas');
+    Route::get('/admin/pendaftaran/terjadwal', [KelasController::class, 'showTerjadwal'])->name('admin.terjadwal');
+    Route::put('/admin/pendaftaran/{id}/update-status', [KelasController::class, 'updateStatus'])->name('admin.update_status');
 });
 
 // Route untuk Mahasiswa
@@ -46,4 +53,7 @@ Route::middleware(['mahasiswa'])->group(function () {
     Route::post('/mahasiswa/pilih-tanggal', [MahasiswaAuthController::class, 'pilihTanggal'])->name('mahasiswa.pilih_tanggal');
     Route::post('/mahasiswa/konfirmasi-bayar/{id}', [MahasiswaAuthController::class, 'konfirmasiBayar'])->name('mahasiswa.konfirmasi_bayar');
 
+    Route::get('/jadwal-kelas', [KelasController::class, 'index'])->name('jadwal.index');
+    Route::get('/pendaftaran', [PendaftaranKelasController::class, 'index'])->name('pendaftaran.index');
+    Route::post('/pendaftaran', [PendaftaranKelasController::class, 'store'])->name('pendaftaran.store');
 });
