@@ -73,6 +73,9 @@
     </ul>
 
 
+    <form action="{{ route('mahasiswa.daftarKelasForm') }}" method="GET" style="display: inline;">
+        <button type="submit">Daftar Kelas</button>
+    </form>
     <form action="{{ route('mahasiswa.logout') }}" method="GET" style="display: inline;">
         <button type="submit">Logout</button>
     </form>

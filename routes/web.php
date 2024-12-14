@@ -24,24 +24,26 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
+
 // Dashboard Admin
 Route::middleware(['admin'])->group(function () {
     Route::get('/jadwal-tes', [JadwalTesController::class, 'index'])->name('jadwal.index');
+    Route::get('/jadwal-kelas', [KelasController::class, 'index'])->name('admin.jadwalkelas');
     Route::post('/jadwal-tes', [JadwalTesController::class, 'store'])->name('jadwal.store');
+    Route::post('/jadwal-kelas', [KelasController::class, 'store'])->name('kelas.store');
     Route::delete('/jadwal-tes/{tanggal}', [JadwalTesController::class, 'destroy'])->name('jadwal.destroy');
+    Route::delete('/jadwal-kelas/{id}', [KelasController::class, 'destroy'])->name('admin.jadwalkelas.destroy');
     Route::get('/admin/pendaftaran-tes', [JadwalTesController::class, 'showPendaftaran'])->name('admin.pendaftaran_tes');
+        Route::get('/admin/pendaftaran-tes', [JadwalTesController::class, 'showPendaftaran'])->name('admin.pendaftaran_tes');
     Route::post('/admin/pendaftaran-tes/{id}/tentukan-ruangan', [JadwalTesController::class, 'tentukanRuangan'])->name('admin.tentukan_ruangan');
+    Route::get('/admin/pendaftaran_kelas', [PendaftaranKelasController::class, 'index'])
+    ->name('admin.pendaftaran_kelas');
     Route::get('admin/pendaftaran/terjadwal', [JadwalTesController::class, 'showTerjadwal'])->name('admin.pendaftaran.terjadwal');
     Route::put('admin/pendaftaran/{id}/update-status', [JadwalTesController::class, 'updateStatusTes'])->name('admin.update_status_tes');
     Route::put('/admin/verifikasi-bayar/{id}', [JadwalTesController::class, 'verifikasiBayar'])->name('admin.verifikasi_bayar');
+    Route::put('/admin/pendaftaran/{id}/batal-verifikasi', [JadwalTesController::class, 'batalVerifikasi'])->name('admin.batal_verifikasi');
 
-    Route::get('/jadwal-kelas', [KelasController::class, 'index'])->name('jadwal.index');
-    Route::post('/jadwal-kelas', [KelasController::class, 'store'])->name('jadwal.store');
-    Route::delete('/jadwal-kelas/{id}', [KelasController::class, 'destroy'])->name('jadwal.destroy');
-    Route::get('/admin/pendaftaran-kelas', [KelasController::class, 'showPendaftaran'])->name('admin.pendaftaran_kelas');
-    Route::post('/admin/pendaftaran-kelas/{id}/tentukan-kelas', [KelasController::class, 'tentukanKelas'])->name('admin.tentukan_kelas');
-    Route::get('/admin/pendaftaran/terjadwal', [KelasController::class, 'showTerjadwal'])->name('admin.terjadwal');
-    Route::put('/admin/pendaftaran/{id}/update-status', [KelasController::class, 'updateStatus'])->name('admin.update_status');
+
 });
 
 // Route untuk Mahasiswa
@@ -55,7 +57,10 @@ Route::middleware(['mahasiswa'])->group(function () {
     Route::post('/mahasiswa/pilih-tanggal', [MahasiswaAuthController::class, 'pilihTanggal'])->name('mahasiswa.pilih_tanggal');
     Route::post('/mahasiswa/konfirmasi-bayar/{id}', [MahasiswaAuthController::class, 'konfirmasiBayar'])->name('mahasiswa.konfirmasi_bayar');
 
-    Route::get('/jadwal-kelas', [KelasController::class, 'index'])->name('jadwal.index');
-    Route::get('/pendaftaran', [PendaftaranKelasController::class, 'index'])->name('pendaftaran.index');
-    Route::post('/pendaftaran', [PendaftaranKelasController::class, 'store'])->name('pendaftaran.store');
+    // Menampilkan form pendaftaran kelas
+    Route::get('/mahasiswa/daftar-kelas', [MahasiswaAuthController::class, 'daftarKelasForm'])->name('mahasiswa.daftarKelasForm');
+
+    // Menyimpan pendaftaran kelas
+    Route::post('/mahasiswa/daftar-kelas', [MahasiswaAuthController::class, 'daftarKelas'])->name('mahasiswa.daftarKelas');
+
 });

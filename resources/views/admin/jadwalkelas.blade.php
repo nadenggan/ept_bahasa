@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Tes</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body>
@@ -13,10 +14,8 @@
             <h1>Selamat Datang</h1>
             <p>Kelola jadwal tes dan kelas dengan mudah dan efisien</p>
         </div>
-        <button type="submit">Tambah Jadwal</button>
-    </form>
 
-        <h3>Jadwal Tes</h3>
+        <h3>Jadwal Kelas</h3>
 
         <!-- Menampilkan pesan sukses -->
         @if (session('success'))
@@ -27,20 +26,28 @@
         <p class="error">{{ $errors->first() }}</p>
         @endif
 
-        <!-- Form untuk menambahkan jadwal tes EPT -->
-        <form action="{{ route('jadwal.store') }}" method="POST">
+        <!-- Form untuk menambahkan jadwal kelas -->
+        <form action="{{ route('kelas.store') }}" method="POST">
             @csrf
             <div>
                 <label for="tanggal">Tanggal:</label>
                 <input type="date" id="tanggal" name="tanggal" required>
+            </div>
+            <div>
+                <label for="ruangan">Ruangan:</label>
+                <input type="text" id="ruangan" name="ruangan" required>
+            </div>
+            <div>
+                <label for="kuota">Kuota:</label>
+                <input type="number" id="kuota" name="kuota" value="30" required>
             </div>
             <div class="actions">
                 <button type="submit">Tambah Jadwal</button>
             </div>
         </form>
 
-        <!-- Menampilkan jadwal tes EPT -->
-        @forelse ($jadwals as $tanggal => $ruangan)
+        <!-- Menampilkan jadwal kelas yang sudah ada -->
+        @forelse ($kelass as $tanggal => $ruangans)
         <h4>{{ $tanggal }}</h4>
         <table>
             <thead>
@@ -51,36 +58,35 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ruangan as $jadwal)
+                @foreach ($ruangans as $kelas)
                 <tr>
-                    <td>{{ $jadwal->ruangan }}</td>
-                    <td>{{ $jadwal->kapasitas }}</td>
-                    <td>{{ $jadwal->kuota }}</td>
+                    <td>{{ $kelas->ruangan }}</td>
+                    <td>{{ $kelas->kuota }}</td>
+                    <td>{{ $kelas->kuota }}</td> <!-- Bisa ditambah logika untuk menghitung kuota tersisa -->
                 </tr>
                 @endforeach
             </tbody>
         </table>
 
-        <!-- Menghapus jadwal tes EPT -->
-        <form action="{{ route('jadwal.destroy', $tanggal) }}" method="POST"
-            onsubmit="return confirm('Hapus semua jadwal untuk tanggal ini?');">
+        <!-- Menghapus jadwal kelas -->
+        <form action="{{ route('admin.jadwalkelas.destroy', $kelas->id) }}" method="POST"
+            onsubmit="return confirm('Hapus jadwal untuk kelas ini?');">
             @csrf
             @method('DELETE')
             <div class="actions">
-                <button type="submit">Hapus Jadwal Tanggal {{ $tanggal }}</button>
+                <button type="submit">Hapus Jadwal Kelas {{ $kelas->tanggal }}</button>
             </div>
         </form>
         @empty
         <p>Belum ada jadwal.</p>
         @endforelse
 
+
+
         <!-- Tombol navigasi tambahan -->
         <div class="button-group">
-        <form action="{{ route('admin.jadwalkelas') }}" method="GET">
+            <form action="{{ route('admin.jadwalkelas') }}" method="GET">
                 <button type="submit">English Class Schedule</button>
-            </form>
-            <form action="{{ route('admin.pendaftaran_kelas') }}" method="GET">
-                <button type="submit">Data Siswa English Class</button>
             </form>
             <form action="{{ route('admin.pendaftaran_tes') }}" method="GET">
                 <button type="submit">Pendaftaran Tes</button>
@@ -93,15 +99,10 @@
             </form>
         </div>
 
-    <!-- Route halaman data mahasiswa yang akan mengikuti tes EPT -->
-    <form action="{{ route('admin.pendaftaran.terjadwal') }}" method="GET" style="display: inline;">
-        <button type="submit">Data Siswa Tes</button>
-    </form>
-
-    <!-- Route logout -->
-    <form action="{{ route('logout') }}" method="GET" style="display: inline;">
-        <button type="submit">Logout</button>
-    </form>
+        <div class="footer">
+            <p>&copy; 2024 UPT Bahasa UPN Veteran Jawa Timur</p>
+        </div>
+    </div>
 </body>
 
 </html>
