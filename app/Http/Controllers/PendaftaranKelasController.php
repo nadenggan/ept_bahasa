@@ -14,7 +14,7 @@ class PendaftaranKelasController extends Controller
     {
         $pendaftaranKelas = PendaftaranKelas::with(['mahasiswa', 'kelas'])->get();
         return view('admin.pendaftaran_kelas', compact('pendaftaranKelas'));
-    }
+    }    
 
     // Menambah pendaftaran kelas
     public function store(Request $request)
@@ -78,24 +78,4 @@ class PendaftaranKelasController extends Controller
 
         return view('admin.detail_kelas', compact('kelas', 'pendaftaranKelas'));
     }
-
-    // Menentukan status pendaftaran (diterima atau ditolak)
-    public function updateStatus(Request $request, $id)
-    {
-        $pendaftaran = PendaftaranKelas::findOrFail($id);
-
-        $request->validate([
-            'status_daftar' => 'required|in:diterima,ditolak',
-        ]);
-
-        $pendaftaran->update([
-            'status_daftar' => $request->status_daftar,
-        ]);
-
-        return redirect()->route('pendaftaran.index')->with('success', 'Status pendaftaran berhasil diperbarui.');
-    }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes

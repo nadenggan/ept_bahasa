@@ -69,17 +69,19 @@
         </table>
 
         <!-- Menghapus jadwal kelas -->
-        <form action="{{ route('kelas.destroy', $tanggal) }}" method="POST"
-            onsubmit="return confirm('Hapus semua jadwal untuk tanggal ini?');">
+        <form action="{{ route('admin.jadwalkelas.destroy', $kelas->id) }}" method="POST"
+            onsubmit="return confirm('Hapus jadwal untuk kelas ini?');">
             @csrf
             @method('DELETE')
             <div class="actions">
-                <button type="submit">Hapus Jadwal Tanggal {{ $tanggal }}</button>
+                <button type="submit">Hapus Jadwal Kelas {{ $kelas->tanggal }}</button>
             </div>
         </form>
         @empty
         <p>Belum ada jadwal.</p>
         @endforelse
+
+
 
         <!-- Tombol navigasi tambahan -->
         <div class="button-group">
