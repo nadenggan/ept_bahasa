@@ -94,4 +94,8 @@ class PendaftaranKelasController extends Controller
 
         return redirect()->route('pendaftaran.index')->with('success', 'Status pendaftaran berhasil diperbarui.');
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

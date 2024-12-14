@@ -23,4 +23,8 @@ class PendaftaranKelas extends Model
     {
         return $this->belongsTo(Kelas::class, 'jadwal_kelas_id');
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
