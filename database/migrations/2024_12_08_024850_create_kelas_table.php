@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal');
+            $table->timestamp('tanggal');
             $table->string('ruangan');
             $table->integer('kuota')->default(30);
             $table->timestamps();

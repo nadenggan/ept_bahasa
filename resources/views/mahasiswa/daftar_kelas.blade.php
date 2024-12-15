@@ -58,7 +58,8 @@
                             <select name="jadwal_kelas_id" id="jadwal_kelas_id" class="form-select" required>
                                 @foreach ($kelas as $kls)
                                     <option value="{{ $kls->id }}">
-                                        {{ $kls->nama_kelas }} (Ruangan: {{ $kls->ruangan }}, Sisa Kuota: {{ $kls->kuota }})
+                                    {{ \Carbon\Carbon::parse($kls->tanggal)->format('Y-m-d') }} 
+                                    (Ruangan: {{ $kls->ruangan }}, Sisa Kuota: {{ $kls->kuota }})
                                     </option>
                                 @endforeach
                             </select>

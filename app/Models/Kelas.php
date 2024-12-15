@@ -10,5 +10,5 @@ class Kelas extends Model
     use HasFactory;
 
     protected $table = 'kelas';
-    protected $fillable = ['tgl_kelas', 'ruangan', 'kuota'];
+    protected $fillable = ['tanggal', 'ruangan', 'kuota'];
 }
