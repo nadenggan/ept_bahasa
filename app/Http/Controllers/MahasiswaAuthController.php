@@ -7,6 +7,8 @@ use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Hash;
 use App\Models\JadwalTes;
 use App\Models\PendaftaranTes;
+use App\Models\Kelas;
+use App\Models\PendaftaranKelas;
 use App\Http\Controllers\Log;
 use Carbon\Carbon;
 
@@ -126,4 +128,46 @@ class MahasiswaAuthController extends Controller
         return redirect()->route('mahasiswa.ept')->with('success', 'Bukti pembayaran berhasil diunggah. Menunggu konfirmasi admin.');
     }
 
+    // Menampilkan form pendaftaran kelas
+    public function daftarKelasForm(Request $request)
+    {
+        // Cek apakah mahasiswa sudah login
+        if (!$request->session()->has('mahasiswa')) {
+            return redirect('/login/mahasiswa');
+        }
+
+        // Ambil data kelas yang tersedia
+        $kelas = Kelas::where('kuota', '>', 0)->get();
+
+        return view('mahasiswa.daftar_kelas', compact('kelas'));
+    }
+
+    // Menyimpan pendaftaran kelas
+public function daftarKelas(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'jadwal_kelas_id' => 'required|exists:kelas,id',
+    ]);
+
+    // Ambil kelas yang dipilih
+    $kelas = Kelas::findOrFail($request->jadwal_kelas_id);
+
+    // Cek kuota kelas
+    if ($kelas->kuota <= 0) {
+        return back()->withErrors(['Kelas sudah penuh.']);
+    }
+
+    // Simpan pendaftaran kelas
+    PendaftaranKelas::create([
+        'mahasiswa_id' => $request->session()->get('mahasiswa')->id,
+        'jadwal_kelas_id' => $request->jadwal_kelas_id,
+        'status_daftar' => 'menunggu',
+    ]);
+
+    // Kurangi kuota kelas
+    $kelas->decrement('kuota');
+
+    return redirect()->route('mahasiswa.daftarKelasForm')->with('success', 'Pendaftaran kelas berhasil!');
+}
 }
