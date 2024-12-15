@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->string('ruangan')->nullable();
             $table->string('status_tes')->nullable();
             $table->date('tgl_bayar')->nullable();
+            $table->string('bukti_bayar')->nullable();
             $table->string('no_transaksi');
             $table->timestamps();
         });

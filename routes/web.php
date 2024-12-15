@@ -20,7 +20,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 // Route untuk Admin
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::get('/login', [AuthController::class, 'showLoginForm']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -56,6 +56,7 @@ Route::middleware(['mahasiswa'])->group(function () {
     Route::get('/mahasiswa/dashboard', [MahasiswaAuthController::class, 'dashboard'])->name('mahasiswa.dashboard');
     Route::post('/mahasiswa/pilih-tanggal', [MahasiswaAuthController::class, 'pilihTanggal'])->name('mahasiswa.pilih_tanggal');
     Route::post('/mahasiswa/konfirmasi-bayar/{id}', [MahasiswaAuthController::class, 'konfirmasiBayar'])->name('mahasiswa.konfirmasi_bayar');
+    Route::get('/mahasiswa/ept',[MahasiswaAuthController::class, 'ept'])->name('mahasiswa.ept');
 
     // Menampilkan form pendaftaran kelas
     Route::get('/mahasiswa/daftar-kelas', [MahasiswaAuthController::class, 'daftarKelasForm'])->name('mahasiswa.daftarKelasForm');

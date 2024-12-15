@@ -4,33 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+    <style>
+
+    </style>
 </head>
 <body>
-    <h2>Login</h2>
-
-    <!-- Form login admin -->
-    <form action="{{ route('login') }}" method="POST">
-        @csrf
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+    <div class="container">
+        <div class="image-section"></div>
+        <div class="form-section">
+            <div class="logo">
+                <img src="/logo_upn.png" alt="Logo">
+                <h1>UPT Pusat Bahasa</h1>
+                <p>UPN Veteran Jawa Timur</p>
+            </div>
+            <form action="/login" method="POST">
+                @csrf
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter password" required>
+                <a href="#">Forget your password?</a>
+                <button type="submit">Login</button>
+            </form>
         </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-
-    <!-- Menampilkan pesan eror -->
-    @if ($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    </div>
 </body>
 </html>

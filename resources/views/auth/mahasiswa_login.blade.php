@@ -3,34 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Mahasiswa</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-    <h2>Login Mahasiswa</h2>
+    <div class="container">
+        <div class="image-section"></div>
+        <div class="form-section">
+            <div class="logo">
+                <img src="/logo_upn.png" alt="Logo">
+                <h1>UPT Pusat Bahasa</h1>
+                <p>UPN Veteran Jawa Timur</p>
+            </div>
+            <form action="{{ route('mahasiswa.login') }}" method="POST">
+                @csrf
+                <input type="email" name="email" placeholder="Enter your email" required>
+                <input type="password" name="password" placeholder="Enter password" required>
+                <a href="#">Forget your password?</a>
+                <button type="submit">Login</button>
+            </form>
 
-    <!-- Menampilkan pesan error -->
-    @if ($errors->any())
-        <div style="color: red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
         </div>
-    @endif
-
-    <!-- Form login mahasiswa -->
-    <form action="{{ route('mahasiswa.login') }}" method="POST">
-        @csrf
-        <div>
-            <label for="email">Email:</label>
-            <input type="email" name="email" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    </div>
 </body>
 </html>
+
