@@ -127,7 +127,7 @@
             but it's a need, especially for highly educated communities. 
             The UPT Pusat Bahasa assists in improving English proficiency through various programs.
         </p>
-        <a href="/mahasiswa/course" class="btn btn-primary">Register Course</a>
+        <a href="{{ route('mahasiswa.daftarKelasForm') }}" class="btn btn-primary">Register Course</a>
     </div>
 </section>
 
