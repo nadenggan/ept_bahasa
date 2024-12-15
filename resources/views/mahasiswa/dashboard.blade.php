@@ -20,9 +20,9 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#program">Program</a></li>
-                <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ route('mahasiswa.logout') }}">Logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="/mahasiswa/profil">Profil</a></li>
             </ul>
         </div>
     </div>
@@ -163,12 +163,12 @@
     </footer>
 
 
-    <form action="{{ route('mahasiswa.daftarKelasForm') }}" method="GET" style="display: inline;">
+    {{-- <form action="{{ route('mahasiswa.daftarKelasForm') }}" method="GET" style="display: inline;">
         <button type="submit">Daftar Kelas</button>
     </form>
     <form action="{{ route('mahasiswa.logout') }}" method="GET" style="display: inline;">
         <button type="submit">Logout</button>
-    </form>
+    </form> --}}
 
     <!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

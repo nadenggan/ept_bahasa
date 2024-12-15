@@ -7,7 +7,6 @@
     <!-- Tambahkan link ke file CSS atau framework frontend seperti Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/dashboard.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <header class="bg-primary text-white py-3">
@@ -82,7 +81,7 @@
                         The English language skills tested include listening, reading and writing. 
                         The language components tested include vocabulary, structure, pronunciation, including intonation and emphasis.
                     </p>
-                     <a href="{{ route('mahasiswa.dashboard') }}"  class="btn btn-primary">Register EPT Test</a>
+                     <a href="{{ route('mahasiswa.dashboard') }}"  class="btn btn-primary">Dashboard</a>
                 </div>
                 <div class="col-md-6 text-center p-3">
                     <img src="{{ asset('/ept-logo.png') }}" alt="EPT Logo" class="img-fluid">
