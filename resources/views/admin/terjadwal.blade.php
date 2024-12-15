@@ -5,93 +5,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Mahasiswa Terjadwal</title>
+    <link rel="stylesheet" href="../css/daftar.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
             margin: 0;
-            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9;
             color: #333;
         }
 
         .container {
             width: 90%;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 30px auto;
             padding: 20px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .hero {
+            background: linear-gradient(135deg, #4a90e2, #50c9c3);
+            color: #fff;
+            padding: 40px;
+            border-radius: 10px;
             text-align: center;
-            background: linear-gradient(135deg, #007bff, #007bff);
-            color: white;
-            padding: 50px 20px;
-            border-radius: 12px 12px 0 0;
+            margin-bottom: 30px;
         }
 
-        h1 {
+        .hero h1 {
             margin: 0;
-            font-size: 2.5rem;
+            font-size: 2.8rem;
+        }
+
+        .hero p {
+            margin: 10px 0 0;
+            font-size: 1.2rem;
+        }
+
+        h2 {
+            color: #4a90e2;
+            margin-top: 30px;
+            font-size: 1.8rem;
+        }
+
+        .success {
+            color: #4caf50;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .error {
+            color: #f44336;
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-size: 1rem;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 5px;
             margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-
-        th, td {
-            padding: 10px;
+        table th, table td {
+            padding: 12px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
-        th {
-            background-color: #007bff;
-            color: white;
+        table th {
+            background-color: #4a90e2;
+            color: #fff;
         }
 
-        tr:nth-child(even) {
+        table tr:nth-child(even) {
             background-color: #f9f9f9;
         }
 
-        tr:hover {
-            background-color: #eef6ff;
+        table tr:hover {
+            background-color: #f1f1f1;
         }
 
-        .success {
-            color: green;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        select {
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+        .cta {
+            margin-top: 30px;
+            text-align: center;
         }
 
         .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #007bff;
-            font-weight: bold;
-            text-align: center;
+            color: #4a90e2;
+            text-decoration: none;
+            font-size: 1rem;
         }
 
         .back-link:hover {
@@ -100,12 +109,20 @@
 
         footer {
             text-align: center;
-            margin-top: 30px;
-            padding: 15px;
-            background: #f8f9fa;
-            color: #6c757d;
-            border-top: 1px solid #dee2e6;
+            margin-top: 40px;
             font-size: 0.9rem;
+            color: #777;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        footer a {
+            color: #4a90e2;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -124,7 +141,19 @@
             </div>
         @endif
 
-        <!-- Menampilkan data siswa yang akan mengikuti tes EPT -->
+        <!-- Menampilkan pesan error -->
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Daftar Mahasiswa yang Memilih Tanggal Tes -->
+        <h2>Daftar Mahasiswa yang Memilih Tanggal Tes</h2>
         @if ($terjadwal->isEmpty())
             <p>Tidak ada data mahasiswa terjadwal.</p>
         @else
@@ -166,12 +195,16 @@
             </table>
         @endif
 
-        <a href="{{ route('jadwal.index') }}" class="back-link">&laquo; Kembali ke dashboard</a>
+        <div class="cta">
+            <!-- Kembali ke dashboard admin -->
+            <a href="{{ route('jadwal.index') }}" class="back-link">&laquo; Kembali ke dashboard</a>
+        </div>
     </div>
 
     <footer>
         &copy; {{ date('Y') }} UPT Bahasa UPN Veteran Jawa Timur.
     </footer>
+
 </body>
 
 </html>
